@@ -9,8 +9,7 @@ class ChatBar extends Component {
 
     _handleContentChange = (event) => {
         if (event.key === 'Enter') {
-            let id = Date.now();
-            this.props.onMessageChange(event.target.value,id);
+            this.props.onMessageChange(event.target.value);
         }
     }
 
