@@ -21,7 +21,7 @@ class MessageList extends Component {
     const allNotifications = getFromProps.map((message) => {
         
         if(message.type = "postNotification") {
-            notifyUserWithMsg = `${message.oldUsername} has changed to ${message.username}`;                
+            notifyUserWithMsg = `${this.props.usernameForMessages.oldUsername} has changed to ${this.props.usernameForMessages.username}`;                
         }
     
     });

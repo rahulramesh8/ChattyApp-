@@ -8,7 +8,8 @@ class App extends Component {
     super(props);
     this.state = {
       currentUser: {name: "Bob"}, // optional. if currentUser is not defined, it means the user is Anonymous
-      messages: []
+      messages: [],
+      notifications: []
     }
   }
   componentDidMount() {
@@ -45,6 +46,8 @@ class App extends Component {
           let incomingUsername = JSON.parse(event.data);
             console.log("Incoming data for username change: ", incomingUsername);        
             this.setState({currentUser: {name:incomingUsername.username}})
+            this.setState({notifications:{username:incomingUsername.username,
+                                          oldUsername:incomingUsername.oldUsername}});
             break;
           
           default:
@@ -98,7 +101,7 @@ class App extends Component {
           <a href="/" className="navbar-brand">Chatty</a>
         </nav>
         <main>
-          <MessageList dataForMessages = {this.state.messages} usernameForMessages = {this.keepOldUser}/>
+          <MessageList dataForMessages = {this.state.messages} usernameForMessages = {this.state.notifications}/>
         </main>
         <footer>
           <ChatBar onUsernameChange = {this._usernameHandler} onMessageChange ={this._contentHandler} dataForChatBar = {this.state.currentUser}  />
