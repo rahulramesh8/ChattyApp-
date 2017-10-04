@@ -20,7 +20,8 @@ class MessageList extends Component {
                 )
             } 
             else if(message.type === "incomingNotification") {
-                notifyUserWithMsg = `${this.props.usernameForMessages.oldUsername} has changed to ${this.props.usernameForMessages.username}`;                
+                debugger;
+                notifyUserWithMsg = `${message.oldUsername} has changed to ${message.newUsername}`;                
                 return (
                     <Message toShowonMsgList = {notifyUserWithMsg}/>
                 )
