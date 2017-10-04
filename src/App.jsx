@@ -11,16 +11,16 @@ class App extends Component {
       messages: []
     }
   }
-
   componentDidMount() {
     console.log("componentDidMount <App />")
     //Storing the socket inside the class
     this.socket = new WebSocket("ws://localhost:3001")
     this.socket.onopen = (event) => {
       console.log("Connected to server");
-
-
-
+      
+      
+      
+      const keepOldUser = this.state.currentUser.name;
       this.socket.onmessage = (event) => {
         console.log(event);
 
@@ -62,23 +62,19 @@ class App extends Component {
   
   
   _usernameHandler = (username) => {
-    // this.setState({currentUser:{name: username}});
     
     //Object to be sent to server with username and notification
     var oldUsername = this.state.currentUser.name;
     let sendUsernameToServer ={
       type: "postNotification",
-      username: this.state.currentUser.name,
-      content: ` ${oldUsername} has changed their name to ${username}`
+      username: username,
+      oldUsername: oldUsername,
     }
-
     // Send the msg object to the server as a JSON-formatted string.
     this.socket.send(JSON.stringify(sendUsernameToServer));
    }
 
   _contentHandler = (msg) => {
-    //Was initially used to set the state after adding an instance
-    // this.setState({messages: newMessageInfo})
     
     //Object to be sent to server with username and message
     let sendMsgToServer ={
@@ -87,6 +83,7 @@ class App extends Component {
       content: msg,
       id: null
     }
+
     // Send the msg object to the server as a JSON-formatted string.
     this.socket.send(JSON.stringify(sendMsgToServer));
 
@@ -101,7 +98,7 @@ class App extends Component {
           <a href="/" className="navbar-brand">Chatty</a>
         </nav>
         <main>
-          <MessageList dataForMessages = {this.state.messages} />
+          <MessageList dataForMessages = {this.state.messages} usernameForMessages = {this.keepOldUser}/>
         </main>
         <footer>
           <ChatBar onUsernameChange = {this._usernameHandler} onMessageChange ={this._contentHandler} dataForChatBar = {this.state.currentUser}  />

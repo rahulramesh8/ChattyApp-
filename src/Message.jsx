@@ -6,7 +6,7 @@ class Message extends Component {
     return (
 
       <div className="message system">
-        Annonymous1 changed their name to nomnom.
+        {this.props.toShowonMsgList}
       </div>
     )
   }
