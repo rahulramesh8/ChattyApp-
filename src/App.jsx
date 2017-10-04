@@ -43,9 +43,12 @@ class App extends Component {
 
     this.setState({messages: newMessageInfo});
     
+    let sendToServer ={
+      username: this.state.currentUser.name,
+      content: msg
+    }
     // Send the msg object as a JSON-formatted string.
-    console.log(this.socket)
-      this.socket.send("Here's some text that the server is urgently awaiting!");
+    this.socket.send(JSON.stringify(sendToServer));
 
   }
 
