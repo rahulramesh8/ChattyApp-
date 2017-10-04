@@ -16,43 +16,80 @@ class App extends Component {
     console.log("componentDidMount <App />")
     //Storing the socket inside the class
     this.socket = new WebSocket("ws://localhost:3001")
-    console.log("Connected to server")
+    this.socket.onopen = (event) => {
+      console.log("Connected to server");
+
+
+
+      this.socket.onmessage = (event) => {
+        console.log(event);
+
+        const data = JSON.parse(event.data);
+        switch(data.type) {
+          case "incomingMessage":
+            //Receving messages from the server
+            let incomingMsg = JSON.parse(event.data);
+            console.log("Incoming msg: ", incomingMsg)
+            let newMessageInfo = [...this.state.messages,{
+              type: incomingMsg.type,
+              id: incomingMsg.id,
+              username: incomingMsg.username,
+              content: incomingMsg.content
+            }];
+            console.log("newMsgInfo: ", newMessageInfo);
+            this.setState({messages: newMessageInfo})
+            this.setState({currentUser: {name:incomingMsg.username}})
+            break;
+
+          case "incomingNotification":
+          let incomingUsername = JSON.parse(event.data);
+            console.log("Incoming data for username change: ", incomingUsername);        
+            this.setState({currentUser: {name:incomingUsername.username}})
+            break;
+          
+          default:
+            throw new Error("Uknown event type" + data.type);
+        }
+
+      }
+
+
+    };
+
+
 
   }
   
+  
   _usernameHandler = (username) => {
-    this.setState({currentUser:{name: username}});
-  }
+    // this.setState({currentUser:{name: username}});
+    
+    //Object to be sent to server with username and notification
+    var oldUsername = this.state.currentUser.name;
+    let sendUsernameToServer ={
+      type: "postNotification",
+      username: this.state.currentUser.name,
+      content: ` ${oldUsername} has changed their name to ${username}`
+    }
+
+    // Send the msg object to the server as a JSON-formatted string.
+    this.socket.send(JSON.stringify(sendUsernameToServer));
+   }
 
   _contentHandler = (msg) => {
-    
-
-
     //Was initially used to set the state after adding an instance
     // this.setState({messages: newMessageInfo})
     
     //Object to be sent to server with username and message
-    let sendToServer ={
+    let sendMsgToServer ={
+      type: "postMessage",
       username: this.state.currentUser.name,
       content: msg,
       id: null
     }
-
     // Send the msg object to the server as a JSON-formatted string.
-    this.socket.send(JSON.stringify(sendToServer));
+    this.socket.send(JSON.stringify(sendMsgToServer));
 
-    //Receving messages from the server
-    this.socket.onmessage = (event) => {
-      let incomingMsg = JSON.parse(event.data);
-      console.log("Incoming msg: ", incomingMsg)
-      let newMessageInfo = [...this.state.messages,{
-        id: incomingMsg.id,
-        username: incomingMsg.username,
-        content: incomingMsg.content
-      }];
-      console.log("newMsgInfo: ", newMessageInfo);
-      this.setState({messages: newMessageInfo})
-    }
   }
 
   render() {

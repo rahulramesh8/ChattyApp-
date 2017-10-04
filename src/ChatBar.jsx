@@ -4,7 +4,9 @@ class ChatBar extends Component {
 
 
     _handleUserChange = (event) => {
-        this.props.onUsernameChange(event.target.value);
+        if (event.key === 'Enter') {
+            this.props.onUsernameChange(event.target.value);
+        }
     }
 
     _handleContentChange = (event) => {
@@ -17,7 +19,7 @@ class ChatBar extends Component {
     render() {
         return (
             <div className = "chatbar">
-                <input className="chatbar-username" placeholder= {this.props.dataForChatBar.name} onChange= {this._handleUserChange} />
+                <input className="chatbar-username" placeholder= {this.props.dataForChatBar.name} onKeyPress ={this._handleUserChange}/>
                 <input className="chatbar-message" placeholder= "Type a message and hit Enter" onKeyPress ={this._handleContentChange}  />
             </div>
         )   
