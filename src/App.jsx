@@ -2,15 +2,16 @@ import React, { Component } from 'react';
 import ChatBar from './ChatBar.jsx'
 import MessageList from './messageList.jsx'
 
-
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
       currentUser: {name: "Bob"}, // optional. if currentUser is not defined, it means the user is Anonymous
-      messages: []
+      messages: [],
+      clients: 0
     }
   }
+
   componentDidMount() {
     console.log("componentDidMount <App />")
     //Storing the socket inside the class
@@ -42,15 +43,19 @@ class App extends Component {
             break;
 
           case "incomingNotification":
-          let incomingUsername = JSON.parse(event.data);
+            let incomingUsername = JSON.parse(event.data);
             console.log("Incoming data for username change: ", incomingUsername);        
             this.setState({currentUser: {name:incomingUsername.username}})
             this.setState({messages:[...this.state.messages,
-                                          { type:incomingUsername.type,
-                                            newUsername:incomingUsername.username,
-                                            oldUsername:incomingUsername.oldUsername}]});
+            { type:incomingUsername.type,
+              newUsername:incomingUsername.username,
+              oldUsername:incomingUsername.oldUsername}]});
             break;
           
+          case "clientCounter":
+            this.setState({clients: data.size});
+            break;
+
           default:
             throw new Error("Uknown event type" + data.type);
         }
@@ -100,7 +105,7 @@ class App extends Component {
       <div>
         <nav className="navbar">
           <a href="/" className="navbar-brand">Chatty</a>
-          <span className="navbar-usercount">Users online:</span>
+          <span className="navbar-usercount">Users online: {this.state.clients}</span>
         </nav>
         <main>
           <MessageList dataForMessages = {this.state.messages}/>
