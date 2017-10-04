@@ -26,11 +26,7 @@ class App extends Component {
 
   _contentHandler = (msg) => {
     
-    // let newMessageInfo = [...this.state.messages,{
-    //   id: Date.now(),
-    //   username: this.state.currentUser.name,
-    //   content: msg
-    // }];
+
 
     //Was initially used to set the state after adding an instance
     // this.setState({messages: newMessageInfo})
@@ -47,7 +43,15 @@ class App extends Component {
 
     //Receving messages from the server
     this.socket.onmessage = (event) => {
-      console.log("Event data is: ", event.data);
+      let incomingMsg = JSON.parse(event.data);
+      console.log("Incoming msg: ", incomingMsg)
+      let newMessageInfo = [...this.state.messages,{
+        id: incomingMsg.id,
+        username: incomingMsg.username,
+        content: incomingMsg.content
+      }];
+      console.log("newMsgInfo: ", newMessageInfo);
+      this.setState({messages: newMessageInfo})
     }
   }
 
