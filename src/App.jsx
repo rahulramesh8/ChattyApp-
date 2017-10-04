@@ -8,7 +8,8 @@ class App extends Component {
     this.state = {
       currentUser: {name: "Bob"}, // optional. if currentUser is not defined, it means the user is Anonymous
       messages: [],
-      clients: 0
+      clients: 0,
+      color: "black"
     }
   }
 
@@ -19,8 +20,6 @@ class App extends Component {
     this.socket.onopen = (event) => {
       console.log("Connected to server");
       
-      
-      
       const keepOldUser = this.state.currentUser.name;
       this.socket.onmessage = (event) => {
         console.log(event);
@@ -30,14 +29,14 @@ class App extends Component {
           case "incomingMessage":
             //Receving messages from the server
             let incomingMsg = JSON.parse(event.data);
-            console.log("Incoming msg: ", incomingMsg)
+
             let newMessageInfo = [...this.state.messages,{
               type: incomingMsg.type,
               id: incomingMsg.id,
               username: incomingMsg.username,
               content: incomingMsg.content
             }];
-            console.log("newMsgInfo: ", newMessageInfo);
+
             this.setState({messages: newMessageInfo})
             this.setState({currentUser: {name:incomingMsg.username}})
             break;
@@ -56,19 +55,16 @@ class App extends Component {
             this.setState({clients: data.size});
             break;
 
+          case "clientColor":
+            this.setState({color: data.color});
+            break;
+
           default:
             throw new Error("Uknown event type" + data.type);
         }
-
       }
-
-
     };
-
-
-
   }
-  
   
   _usernameHandler = (username) => {
     
@@ -108,7 +104,7 @@ class App extends Component {
           <span className="navbar-usercount">Users online: {this.state.clients}</span>
         </nav>
         <main>
-          <MessageList dataForMessages = {this.state.messages}/>
+          <MessageList dataForMessages = {this.state.messages} userColor = {this.state.color}/>
         </main>
         <footer>
           <ChatBar sendCurrentUser = {this.state.currentUser.name} onUsernameChange = {this._usernameHandler} onMessageChange ={this._contentHandler} dataForChatBar = {this.state.currentUser}  />

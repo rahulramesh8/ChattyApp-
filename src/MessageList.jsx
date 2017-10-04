@@ -7,20 +7,19 @@ class MessageList extends Component {
         let notifyUserWithMsg =  null;
         let allMessages = null;
         let allNotifications = null;
-
+        
         const getFromProps = this.props.dataForMessages;
         allMessages = getFromProps.map((message) => {
         
             if(message.type === "incomingMessage"){
                 return (
                     <div className="message" key={message.id}>
-                        <span className="message-username">{message.username}</span>
+                        <span className="message-username" style={{color: this.props.userColor}}>{message.username}</span>
                         <span className="message-content">{message.content}</span>
                     </div>
                 )
             } 
             else if(message.type === "incomingNotification") {
-                debugger;
                 notifyUserWithMsg = `${message.oldUsername} has changed to ${message.newUsername}`;                
                 return (
                     <Message toShowonMsgList = {notifyUserWithMsg}/>
