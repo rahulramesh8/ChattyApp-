@@ -27,6 +27,7 @@ class App extends Component {
     console.log("componentDidMount <App />");
     this.socket = new WebSocket("ws://localhost:3001");
     console.log("Connected to server")
+
   }
   
   _usernameHandler = (username) => {
@@ -41,6 +42,11 @@ class App extends Component {
     }];
 
     this.setState({messages: newMessageInfo});
+    
+    // Send the msg object as a JSON-formatted string.
+    console.log(this.socket)
+      this.socket.send("Here's some text that the server is urgently awaiting!");
+
   }
 
   render() {
