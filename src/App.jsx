@@ -104,7 +104,7 @@ class App extends Component {
           <MessageList dataForMessages = {this.state.messages} usernameForMessages = {this.state.notifications}/>
         </main>
         <footer>
-          <ChatBar onUsernameChange = {this._usernameHandler} onMessageChange ={this._contentHandler} dataForChatBar = {this.state.currentUser}  />
+          <ChatBar sendCurrentUser = {this.state.currentUser.name} onUsernameChange = {this._usernameHandler} onMessageChange ={this._contentHandler} dataForChatBar = {this.state.currentUser}  />
         </footer>
       </div>
     );
