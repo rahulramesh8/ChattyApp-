@@ -8,24 +8,14 @@ class App extends Component {
     super(props);
     this.state = {
       currentUser: {name: "Bob"}, // optional. if currentUser is not defined, it means the user is Anonymous
-      messages: [
-        { 
-          id:1,
-          username: "Bob",
-          content: "Has anyone seen my marbles?",
-        },
-        {
-          id:2,
-          username: "Anonymous",
-          content: "No, I think you lost them. You lost your marbles Bob. You lost them for good."
-        }
-      ]
+      messages: []
     }
   }
 
   componentDidMount() {
-    console.log("componentDidMount <App />");
-    this.socket = new WebSocket("ws://localhost:3001");
+    console.log("componentDidMount <App />")
+    //Storing the socket inside the class
+    this.socket = new WebSocket("ws://localhost:3001")
     console.log("Connected to server")
 
   }
@@ -34,22 +24,31 @@ class App extends Component {
     this.setState({currentUser:{name: username}});
   }
 
-  _contentHandler = (msg,id) => {
-    let newMessageInfo = [...this.state.messages,{
-      id: Date.now(),
-      username: this.state.currentUser.name,
-      content: msg
-    }];
-
-    this.setState({messages: newMessageInfo});
+  _contentHandler = (msg) => {
     
+    // let newMessageInfo = [...this.state.messages,{
+    //   id: Date.now(),
+    //   username: this.state.currentUser.name,
+    //   content: msg
+    // }];
+
+    //Was initially used to set the state after adding an instance
+    // this.setState({messages: newMessageInfo})
+    
+    //Object to be sent to server with username and message
     let sendToServer ={
       username: this.state.currentUser.name,
-      content: msg
+      content: msg,
+      id: null
     }
-    // Send the msg object as a JSON-formatted string.
+
+    // Send the msg object to the server as a JSON-formatted string.
     this.socket.send(JSON.stringify(sendToServer));
 
+    //Receving messages from the server
+    this.socket.onmessage = (event) => {
+      console.log("Event data is: ", event.data);
+    }
   }
 
   render() {
