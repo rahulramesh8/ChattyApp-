@@ -100,6 +100,7 @@ class App extends Component {
       <div>
         <nav className="navbar">
           <a href="/" className="navbar-brand">Chatty</a>
+          <span className="navbar-usercount">Users online:</span>
         </nav>
         <main>
           <MessageList dataForMessages = {this.state.messages}/>
