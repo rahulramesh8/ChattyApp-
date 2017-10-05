@@ -10,14 +10,15 @@ class MessageList extends Component {
         
         const getFromProps = this.props.dataForMessages;
         allMessages = getFromProps.map((message) => {
-        
+            let temp = message.content;
             if(message.type === "incomingMessage"){
-
-                if(/\.(?:png|jpg|gif)/.test({message.username})) {
+                console.log(temp);
+                console.log(/\.(?:png|jpg|gif)/.test(temp));
+                if(/\.(?:png|jpg|gif)/.test(temp)) {
                     return (
                         <div className="message" key={message.id}>
-                            <span className="message-username" style={{color: this.props.userColor}}>{message.username}</span>
-                            <span className="message-content">{message.content}</span>
+                            <span className="message-username">{message.username}</span>
+                            <img src={message.content} className="message-content" width = "200px" max-width="60%" height = "300px"/>
                         </div>
                     )
                 }
