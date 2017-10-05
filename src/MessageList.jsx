@@ -17,7 +17,7 @@ class MessageList extends Component {
                 if(/\.(?:png|jpg|gif)/.test(fileName)) {
                     return (
                         <div className="message" key={message.id}>
-                            <span className="message-username">{message.username}</span>
+                            <span className="message-username" style={{color: this.props.userColor}}>{message.username}</span>
                             <img src={message.content} className="message-image" />
                         </div>
                     )
