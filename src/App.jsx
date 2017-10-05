@@ -20,19 +20,18 @@ class App extends Component {
 
   componentDidMount() {
     console.log("componentDidMount <App />")
+
     //Storing the socket inside the class
     this.socket = new WebSocket("ws://localhost:3001")
     this.socket.onopen = (event) => {
       console.log("Connected to server");
       
-      const keepOldUser = this.state.currentUser.name;
+      //Listening for message from server
       this.socket.onmessage = (event) => {
-        console.log(event);
 
         const data = JSON.parse(event.data);
         switch(data.type) {
           case "incomingMessage":
-            //Receving messages from the server
             let incomingMsg = JSON.parse(event.data);
 
             let newMessageInfo = [...this.state.messages,{
@@ -48,7 +47,6 @@ class App extends Component {
 
           case "incomingNotification":
             let incomingUsername = JSON.parse(event.data);
-            console.log("Incoming data for username change: ", incomingUsername);        
             this.setState({currentUser: {name:incomingUsername.username}})
             this.setState({messages:[...this.state.messages,
             { type:incomingUsername.type,
@@ -71,12 +69,12 @@ class App extends Component {
     };
   }
 
+  //Scrolling down to empty div every time component is mounted.
   componentDidUpdate() {
     this.scrollToBottom();
   }
   
   _usernameHandler = (username) => {
-    
     //Object to be sent to server with username and notification
     var oldUsername = this.state.currentUser.name;
     let sendUsernameToServer ={
@@ -84,12 +82,10 @@ class App extends Component {
       username: username,
       oldUsername: oldUsername,
     }
-    // Send the msg object to the server as a JSON-formatted string.
     this.socket.send(JSON.stringify(sendUsernameToServer));
-   }
+  }
 
   _contentHandler = (msg) => {
-    
     //Object to be sent to server with username and message
     let sendMsgToServer ={
       type: "postMessage",
@@ -97,10 +93,7 @@ class App extends Component {
       content: msg,
       id: null
     }
-
-    // Send the msg object to the server as a JSON-formatted string.
     this.socket.send(JSON.stringify(sendMsgToServer));
-
   }
 
   render() {
@@ -115,7 +108,7 @@ class App extends Component {
         <main>
           <MessageList dataForMessages = {this.state.messages} userColor = {this.state.color}/>
           
-          {/* Empty div to help scroll down */}
+          {/* Empty div to help auto-scroll down */}
           <div style={{ float:"left", clear: "both" }}
              ref="Bottomdiv">
           </div>
