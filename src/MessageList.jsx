@@ -12,12 +12,25 @@ class MessageList extends Component {
         allMessages = getFromProps.map((message) => {
         
             if(message.type === "incomingMessage"){
-                return (
-                    <div className="message" key={message.id}>
-                        <span className="message-username" style={{color: this.props.userColor}}>{message.username}</span>
-                        <span className="message-content">{message.content}</span>
-                    </div>
-                )
+
+                if(/\.(?:png|jpg|gif)/.test({message.username})) {
+                    return (
+                        <div className="message" key={message.id}>
+                            <span className="message-username" style={{color: this.props.userColor}}>{message.username}</span>
+                            <span className="message-content">{message.content}</span>
+                        </div>
+                    )
+                }
+                else {
+                    
+                    return (
+                        <div className="message" key={message.id}>
+                            <span className="message-username" style={{color: this.props.userColor}}>{message.username}</span>
+                            <span className="message-content">{message.content}</span>
+                        </div>
+                    )
+                }
+
             } 
             else if(message.type === "incomingNotification") {
                 notifyUserWithMsg = `${message.oldUsername} has changed to ${message.newUsername}`;                
