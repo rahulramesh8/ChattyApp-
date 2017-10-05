@@ -13,6 +13,11 @@ class App extends Component {
     }
   }
 
+  scrollToBottom = () => {
+    const node = this.refs.Bottomdiv;
+    node.scrollIntoView({ behavior: "smooth" });
+  }
+
   componentDidMount() {
     console.log("componentDidMount <App />")
     //Storing the socket inside the class
@@ -65,6 +70,10 @@ class App extends Component {
       }
     };
   }
+
+  componentDidUpdate() {
+    this.scrollToBottom();
+  }
   
   _usernameHandler = (username) => {
     
@@ -105,6 +114,12 @@ class App extends Component {
         </nav>
         <main>
           <MessageList dataForMessages = {this.state.messages} userColor = {this.state.color}/>
+          
+          {/* Empty div to help scroll down */}
+          <div style={{ float:"left", clear: "both" }}
+             ref="Bottomdiv">
+          </div>
+
         </main>
         <footer>
           <ChatBar sendCurrentUser = {this.state.currentUser.name} onUsernameChange = {this._usernameHandler} onMessageChange ={this._contentHandler} dataForChatBar = {this.state.currentUser}  />
