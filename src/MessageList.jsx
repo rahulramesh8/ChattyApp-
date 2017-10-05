@@ -18,7 +18,7 @@ class MessageList extends Component {
                     return (
                         <div className="message" key={message.id}>
                             <span className="message-username">{message.username}</span>
-                            <img src={message.content} className="message-content" width = "200px" max-width="60%" height = "300px"/>
+                            <img src={message.content} className="message-content" max-width="60%" height = "250px"/>
                         </div>
                     )
                 }
