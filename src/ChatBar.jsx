@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 
 class ChatBar extends Component {
 
-
     _handleUserChange = (event) => {
         if (event.key === 'Enter') {
             this.props.onUsernameChange(event.target.value);
@@ -16,7 +15,6 @@ class ChatBar extends Component {
             event.target.value = "";
         }
     }
-
 
     render() {
         return (
