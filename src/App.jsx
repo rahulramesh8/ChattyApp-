@@ -61,9 +61,6 @@ class App extends Component {
           case "clientColor":
             this.setState({color: data.color});
             break;
-
-          default:
-            throw new Error("Uknown event type" + data.type);
         }
       }
     };
@@ -106,7 +103,7 @@ class App extends Component {
           <span className="navbar-usercount">Users online: {this.state.clients}</span>
         </nav>
         <main>
-          <MessageList dataForMessages = {this.state.messages} userColor = {this.state.color}/>
+          <MessageList usernameForMsgs = {this.state.currentUser.name} dataForMessages = {this.state.messages} userColor = {this.state.color}/>
           
           {/* Empty div to help auto-scroll down */}
           <div style={{ float:"left", clear: "both" }}
