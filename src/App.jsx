@@ -6,7 +6,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentUser: {name: "Bob"}, // optional. if currentUser is not defined, it means the user is Anonymous
+      currentUser: {name: "Anonymous"}, // optional. if currentUser is not defined, it means the user is Anonymous
       messages: [],
       clients: 0,
       color: "black"
@@ -42,12 +42,12 @@ class App extends Component {
             }];
 
             this.setState({messages: newMessageInfo})
-            this.setState({currentUser: {name:incomingMsg.username}})
+            // this.setState({currentUser: {name:incomingMsg.username}})
             break;
 
           case "incomingNotification":
             let incomingUsername = JSON.parse(event.data);
-            this.setState({currentUser: {name:incomingUsername.username}})
+            // this.setState({currentUser: {name:incomingUsername.username}})
             this.setState({messages:[...this.state.messages,
             { type:incomingUsername.type,
               newUsername:incomingUsername.username,
@@ -79,6 +79,7 @@ class App extends Component {
       username: username,
       oldUsername: oldUsername,
     }
+    this.setState({currentUser: {name: username}});
     this.socket.send(JSON.stringify(sendUsernameToServer));
   }
 
