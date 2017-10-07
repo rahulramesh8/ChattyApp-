@@ -42,12 +42,10 @@ class App extends Component {
             }];
 
             this.setState({messages: newMessageInfo})
-            // this.setState({currentUser: {name:incomingMsg.username}})
             break;
 
           case "incomingNotification":
             let incomingUsername = JSON.parse(event.data);
-            // this.setState({currentUser: {name:incomingUsername.username}})
             this.setState({messages:[...this.state.messages,
             { type:incomingUsername.type,
               newUsername:incomingUsername.username,

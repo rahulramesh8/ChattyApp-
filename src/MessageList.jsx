@@ -18,7 +18,9 @@ class MessageList extends Component {
                     return (
                         <div className="message" key={message.id}>
                             <span className="message-username" style={{color: this.props.userColor}}>{message.newUsername}</span>
-                            <img src={message.content} className="message-image" />
+                            <span className='message-content'>
+                                <img src={message.content} className="message-image" ></img>
+                            </span>
                         </div>
                     )
                 }
