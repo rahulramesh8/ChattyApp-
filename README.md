@@ -8,9 +8,8 @@ The App implements WebSockets using Node package `ws` on the server-side, and na
 The ChattyApp server can be accessed via this link : (https://github.com/rahulramesh8/ChattyAppServer)
 
 
-### Screenshots
-
-
+### This is the User Interface
+![User Interface](https://github.com/rahulramesh8/ChattyApp-/blob/master/Images/Screen%20Shot%202017-10-07%20at%201.38.24%20AM.png)
 
 
 
